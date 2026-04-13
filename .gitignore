@@ -1,0 +1,9 @@
+node_modules
+<<<<<<< HEAD
+dist
+dist-electron
+.env
+.vscode
+*.log
+=======
+>>>>>>> 7f8dc294 (git commit -m "feat: implement core FreelanceOS CRM and dashboard system")
