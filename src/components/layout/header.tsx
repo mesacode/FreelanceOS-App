@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 export default function Header() {
   return (
     <header className="border-b border-border bg-bg/80 px-6 py-4 backdrop-blur">
@@ -13,4 +15,12 @@ export default function Header() {
       </div>
     </header>
   );
+=======
+export function Header() {
+  return <div>Header</div>;
+>>>>>>> theirs
+=======
+export function Header() {
+  return <div>Header</div>;
+>>>>>>> theirs
 }

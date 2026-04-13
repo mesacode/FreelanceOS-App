@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 
@@ -29,3 +31,13 @@ export default function Button({
     </button>
   );
 }
+=======
+export function Button() {
+  return <div>Button</div>;
+}
+>>>>>>> theirs
+=======
+export function Button() {
+  return <div>Button</div>;
+}
+>>>>>>> theirs

@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import type { ReactNode } from "react";
 import Sidebar from "./sidebar";
 import Header from "./header";
@@ -19,3 +21,13 @@ export default function Shell({ children }: ShellProps) {
     </div>
   );
 }
+=======
+export function Shell() {
+  return <div>Shell</div>;
+}
+>>>>>>> theirs
+=======
+export function Shell() {
+  return <div>Shell</div>;
+}
+>>>>>>> theirs

@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { contextBridge, ipcRenderer } from "electron";
 import type {
   CreateCustomerInput,
@@ -77,3 +79,9 @@ contextBridge.exposeInMainWorld("desktopAPI", {
     activities: () => ipcRenderer.invoke("dashboard:activities")
   }
 });
+=======
+export {};
+>>>>>>> theirs
+=======
+export {};
+>>>>>>> theirs

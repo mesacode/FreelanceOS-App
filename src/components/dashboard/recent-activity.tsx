@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import type { ActivityItem } from "../../../shared/dashboard";
 
 function formatDate(value: string) {
@@ -40,4 +42,12 @@ export default function RecentActivity({ items, loading = false }: RecentActivit
       ))}
     </div>
   );
+=======
+export function RecentActivity() {
+  return <div>Recent Activity</div>;
+>>>>>>> theirs
+=======
+export function RecentActivity() {
+  return <div>Recent Activity</div>;
+>>>>>>> theirs
 }

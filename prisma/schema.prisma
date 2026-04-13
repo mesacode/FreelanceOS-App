@@ -6,6 +6,8 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+<<<<<<< ours
+<<<<<<< ours
 
 model Customer {
   id            String         @id @default(cuid())
@@ -103,3 +105,7 @@ enum ProjectStatus {
   COMPLETED
   CANCELLED
 }
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs

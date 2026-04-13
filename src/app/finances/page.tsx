@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
@@ -646,4 +648,12 @@ export default function FinancesPage() {
       </Modal>
     </div>
   );
+=======
+export default function FinancesPage() {
+  return <main>Finances Page</main>;
+>>>>>>> theirs
+=======
+export default function FinancesPage() {
+  return <main>Finances Page</main>;
+>>>>>>> theirs
 }

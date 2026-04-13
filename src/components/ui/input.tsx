@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import type { InputHTMLAttributes } from "react";
 import clsx from "clsx";
 
@@ -15,3 +17,13 @@ export default function Input({
     />
   );
 }
+=======
+export function Input() {
+  return <div>Input</div>;
+}
+>>>>>>> theirs
+=======
+export function Input() {
+  return <div>Input</div>;
+}
+>>>>>>> theirs

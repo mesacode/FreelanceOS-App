@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import type { ReactNode } from "react";
 
 type CardProps = {
@@ -19,3 +21,13 @@ export default function Card({ title, description, children }: CardProps) {
     </div>
   );
 }
+=======
+export function Card() {
+  return <div>Card</div>;
+}
+>>>>>>> theirs
+=======
+export function Card() {
+  return <div>Card</div>;
+}
+>>>>>>> theirs

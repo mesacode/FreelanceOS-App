@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import type { ReactNode } from "react";
 
 type ModalProps = {
@@ -28,3 +30,13 @@ export default function Modal({ open, title, children, onClose }: ModalProps) {
     </div>
   );
 }
+=======
+export function Modal() {
+  return <div>Modal</div>;
+}
+>>>>>>> theirs
+=======
+export function Modal() {
+  return <div>Modal</div>;
+}
+>>>>>>> theirs

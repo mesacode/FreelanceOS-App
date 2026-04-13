@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { ipcMain } from "electron";
 import { db } from "../lib/db";
 import type { CreateCustomerInput, UpdateCustomerInput } from "../../shared/customer";
@@ -172,3 +174,9 @@ export function registerCustomerIpc() {
     return { success: true };
   });
 }
+=======
+export {};
+>>>>>>> theirs
+=======
+export {};
+>>>>>>> theirs

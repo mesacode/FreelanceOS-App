@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 type StatCardProps = {
   label: string;
   value: string;
@@ -13,3 +15,13 @@ export default function StatCard({ label, value, hint }: StatCardProps) {
     </div>
   );
 }
+=======
+export function StatCard() {
+  return <div>Stat Card</div>;
+}
+>>>>>>> theirs
+=======
+export function StatCard() {
+  return <div>Stat Card</div>;
+}
+>>>>>>> theirs

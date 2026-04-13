@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { NavLink } from "react-router-dom";
 import {
   Bell,
@@ -50,4 +52,12 @@ export default function Sidebar() {
       </nav>
     </aside>
   );
+=======
+export function Sidebar() {
+  return <div>Sidebar</div>;
+>>>>>>> theirs
+=======
+export function Sidebar() {
+  return <div>Sidebar</div>;
+>>>>>>> theirs
 }

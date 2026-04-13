@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
@@ -245,4 +247,12 @@ export default function WhatsappPage() {
       </Modal>
     </div>
   );
+=======
+export default function WhatsappPage() {
+  return <main>Whatsapp Page</main>;
+>>>>>>> theirs
+=======
+export default function WhatsappPage() {
+  return <main>Whatsapp Page</main>;
+>>>>>>> theirs
 }

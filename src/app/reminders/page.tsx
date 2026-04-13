@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
@@ -362,4 +364,12 @@ export default function RemindersPage() {
       </Modal>
     </div>
   );
+=======
+export default function RemindersPage() {
+  return <main>Reminders Page</main>;
+>>>>>>> theirs
+=======
+export default function RemindersPage() {
+  return <main>Reminders Page</main>;
+>>>>>>> theirs
 }

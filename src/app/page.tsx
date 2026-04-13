@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import StatCard from "../components/dashboard/stat-card";
 import Card from "../components/ui/card";
@@ -125,4 +127,12 @@ export default function DashboardPage() {
       </div>
     </div>
   );
+=======
+export default function HomePage() {
+  return <main>FreelanceOS Dashboard</main>;
+>>>>>>> theirs
+=======
+export default function HomePage() {
+  return <main>FreelanceOS Dashboard</main>;
+>>>>>>> theirs
 }

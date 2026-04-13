@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { ipcMain } from "electron";
 import { db } from "../lib/db";
 import type { UpsertSettingInput } from "../../shared/settings";
@@ -43,3 +45,9 @@ export function registerSettingsIpc() {
     return { success: true };
   });
 }
+=======
+export {};
+>>>>>>> theirs
+=======
+export {};
+>>>>>>> theirs

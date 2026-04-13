@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
@@ -230,4 +232,12 @@ export default function SettingsPage() {
       </Card>
     </div>
   );
+=======
+export default function SettingsPage() {
+  return <main>Settings Page</main>;
+>>>>>>> theirs
+=======
+export default function SettingsPage() {
+  return <main>Settings Page</main>;
+>>>>>>> theirs
 }

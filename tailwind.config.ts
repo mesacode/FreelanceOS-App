@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import type { Config } from "tailwindcss";
 
 export default {
@@ -23,3 +25,19 @@ export default {
   },
   plugins: []
 } satisfies Config;
+=======
+=======
+>>>>>>> theirs
+import type { Config } from 'tailwindcss';
+
+export default {
+  content: ['./src/**/*.{ts,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+} satisfies Config;
+<<<<<<< ours
+>>>>>>> theirs
+=======
+>>>>>>> theirs

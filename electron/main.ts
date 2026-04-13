@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { app, BrowserWindow } from "electron";
 import path from "node:path";
 import { registerCustomerIpc } from "./ipc/customer.ipc";
@@ -51,3 +53,9 @@ app.whenReady().then(() => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
+=======
+export {};
+>>>>>>> theirs
+=======
+export {};
+>>>>>>> theirs

@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+<<<<<<< ours
+<<<<<<< ours
 
 :root {
   color-scheme: dark;
@@ -46,3 +48,7 @@ input {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
 }
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs

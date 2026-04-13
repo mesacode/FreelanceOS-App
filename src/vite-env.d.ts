@@ -1,4 +1,6 @@
 /// <reference types="vite/client" />
+<<<<<<< ours
+<<<<<<< ours
 
 import type {
   CreateCustomerInput,
@@ -76,3 +78,7 @@ interface Window {
     };
   };
 }
+=======
+>>>>>>> theirs
+=======
+>>>>>>> theirs

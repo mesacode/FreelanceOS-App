@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/button";
@@ -426,4 +428,12 @@ export default function CustomersPage() {
       </Modal>
     </div>
   );
+=======
+export default function CustomersPage() {
+  return <main>Customers Page</main>;
+>>>>>>> theirs
+=======
+export default function CustomersPage() {
+  return <main>Customers Page</main>;
+>>>>>>> theirs
 }

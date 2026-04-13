@@ -1,3 +1,5 @@
+<<<<<<< ours
+<<<<<<< ours
 import clsx from "clsx";
 import type { ReactNode } from "react";
 
@@ -19,3 +21,13 @@ export default function Badge({ children, variant = "default" }: BadgeProps) {
     </span>
   );
 }
+=======
+export function Badge() {
+  return <div>Badge</div>;
+}
+>>>>>>> theirs
+=======
+export function Badge() {
+  return <div>Badge</div>;
+}
+>>>>>>> theirs
