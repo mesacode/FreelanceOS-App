@@ -9,7 +9,6 @@ import { registerWhatsappIpc } from "./ipc/whatsapp.ipc";
 import { registerDashboardIpc } from "./ipc/dashboard.ipc";
 
 const isDev = !app.isPackaged;
-const isMac = process.platform === "darwin";
 
 function getActiveWindow() {
   return BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0] ?? null;
@@ -59,15 +58,9 @@ function createWindow() {
     height: 920,
     minWidth: 1024,
     minHeight: 680,
-    frame: isMac,
-    titleBarStyle: isMac ? "hiddenInset" : "hidden",
-    titleBarOverlay: isMac
-      ? false
-      : {
-          color: "#131824",
-          symbolColor: "#e2e8f0",
-          height: 42
-        },
+    frame: false,
+    titleBarStyle: "hidden",
+    titleBarOverlay: false,
     backgroundColor: "#09090b",
     title: "FreelanceOS",
     autoHideMenuBar: true,
@@ -78,6 +71,7 @@ function createWindow() {
       nodeIntegration: false
     }
   });
+  win.setMenuBarVisibility(false);
 
   win.on("maximize", () => {
     win.webContents.send("window:maximized-changed", true);

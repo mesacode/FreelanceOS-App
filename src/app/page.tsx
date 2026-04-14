@@ -89,7 +89,7 @@ export default function DashboardPage() {
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:gap-6">
         <StatCard
           label="Aylık Gelir"
           value={monthly.income}
@@ -113,14 +113,6 @@ export default function DashboardPage() {
           changeType="positive"
           icon="◈"
           tone="success"
-        />
-        <StatCard
-          label="Aktif Müşteri"
-          value={String(summary.activeCustomerCount)}
-          change={`+${summary.activeCustomerCount}`}
-          changeType="positive"
-          icon="◉"
-          tone="warning"
         />
       </div>
 

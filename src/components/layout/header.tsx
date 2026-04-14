@@ -12,7 +12,6 @@ const titles: Record<string, string> = {
 
 function WindowControls() {
   const controls = window.desktopAPI?.windowControls;
-  const isMac = window.desktopAPI?.platform === "darwin";
   const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
@@ -31,14 +30,14 @@ function WindowControls() {
     };
   }, [controls]);
 
-  if (!controls || isMac) return null;
+  if (!controls) return null;
 
   return (
     <div className="app-no-drag flex items-center rounded-lg border" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
       <button
         type="button"
         onClick={() => void controls.minimize()}
-        className="grid h-9 w-10 place-items-center text-sm transition-colors hover:bg-white/5"
+        className="grid h-9 w-10 place-items-center text-sm transition-colors hover:bg-white/5 active:bg-white/10"
         style={{ color: "var(--foreground-secondary)" }}
         aria-label="Küçült"
       >
@@ -47,7 +46,7 @@ function WindowControls() {
       <button
         type="button"
         onClick={() => void controls.toggleMaximize()}
-        className="grid h-9 w-10 place-items-center text-sm transition-colors hover:bg-white/5"
+        className="grid h-9 w-10 place-items-center text-sm transition-colors hover:bg-white/5 active:bg-white/10"
         style={{ color: "var(--foreground-secondary)" }}
         aria-label={isMaximized ? "Önceki boyut" : "Büyüt"}
       >
@@ -64,7 +63,7 @@ function WindowControls() {
       <button
         type="button"
         onClick={() => void controls.close()}
-        className="grid h-9 w-10 place-items-center rounded-r-lg text-sm transition-colors hover:bg-rose-500/85 hover:text-white"
+        className="grid h-9 w-10 place-items-center rounded-r-lg text-sm transition-colors hover:bg-rose-500/85 hover:text-white active:bg-rose-600"
         style={{ color: "var(--foreground-secondary)" }}
         aria-label="Kapat"
       >
