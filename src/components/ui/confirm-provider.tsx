@@ -16,11 +16,11 @@ type ConfirmInput = {
   cancelLabel?: string;
 };
 
-type ConfirmContextValue = {
+type ConfirmContextaalue = {
   confirm: (input: ConfirmInput) => Promise<boolean>;
 };
 
-const ConfirmContext = createContext<ConfirmContextValue | null>(null);
+const ConfirmContext = createContext<ConfirmContextaalue | null>(null);
 
 type PendingConfirm = ConfirmInput & {
   resolve: (value: boolean) => void;
@@ -61,7 +61,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
           <p className="text-sm text-subtext">{pending?.description}</p>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => closeWith(false)}>
-              {pending?.cancelLabel ?? "Vazgec"}
+              {pending?.cancelLabel ?? "aazgec"}
             </Button>
             <Button onClick={() => closeWith(true)}>
               {pending?.confirmLabel ?? "Onayla"}

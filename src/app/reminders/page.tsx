@@ -1,11 +1,11 @@
-<<<<<<< ours
-<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
 import Input from "../../components/ui/input";
 import Modal from "../../components/ui/modal";
 import Badge from "../../components/ui/badge";
+import Select from "../../components/ui/select";
+import EmptyState from "../../components/ui/empty-state";
 import { useConfirm } from "../../components/ui/confirm-provider";
 import { useToast } from "../../components/ui/toast-provider";
 import type { Customer } from "../../../shared/customer";
@@ -64,7 +64,7 @@ export default function RemindersPage() {
 
   async function loadData() {
     if (!window.desktopAPI?.reminders) {
-      setError("Desktop API bulunamadi. Uygulamayi Electron ile acin.");
+      setError("Desktop API bulunamadı. Uygulamayı Electron ile açın.");
       setLoading(false);
       return;
     }
@@ -80,7 +80,7 @@ export default function RemindersPage() {
       setCustomers(customerData);
     } catch (err) {
       console.error(err);
-      setError("Hatirlatmalar yuklenemedi.");
+      setError("Hatırlatmalar yüklenemedi.");
     } finally {
       setLoading(false);
     }
@@ -122,7 +122,7 @@ export default function RemindersPage() {
   async function saveReminder() {
     if (!window.desktopAPI?.reminders) return;
     if (!form.title.trim() || !form.dueDate) {
-      setError("Baslik ve tarih zorunludur.");
+      setError("Başlık ve tarih zorunludur.");
       return;
     }
 
@@ -144,19 +144,19 @@ export default function RemindersPage() {
         };
         const updated = await window.desktopAPI.reminders.update(updatePayload);
         setReminders((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
-        show({ type: "success", title: "Hatirlatma guncellendi" });
+        show({ type: "success", title: "Hatırlatma güncellendi" });
       } else {
         const created = await window.desktopAPI.reminders.create(basePayload);
         setReminders((prev) => [created, ...prev]);
-        show({ type: "success", title: "Hatirlatma olusturuldu" });
+        show({ type: "success", title: "Hatırlatma oluşturuldu" });
       }
       setOpen(false);
       setForm(emptyReminderForm);
     } catch (err) {
       console.error(err);
-      const message = err instanceof Error ? err.message : "Hatirlatma kaydedilemedi.";
+      const message = err instanceof Error ? err.message : "Hatırlatma kaydedilemedi.";
       setError(message);
-      show({ type: "error", title: "Kayit basarisiz", description: message });
+      show({ type: "error", title: "Kayit başarısız", description: message });
     } finally {
       setSaving(false);
     }
@@ -169,20 +169,20 @@ export default function RemindersPage() {
       setReminders((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
       show({
         type: "success",
-        title: updated.isCompleted ? "Hatirlatma tamamlandi" : "Hatirlatma tekrar acildi"
+        title: updated.isCompleted ? "Hatırlatma tamamlandı" : "Hatırlatma tekrar açıldı"
       });
     } catch (err) {
       console.error(err);
-      setError("Hatirlatma guncellenemedi.");
-      show({ type: "error", title: "Guncelleme basarisiz" });
+      setError("Hatırlatma güncellenemedi.");
+      show({ type: "error", title: "Güncelleme başarısız" });
     }
   }
 
   async function deleteReminder(id: string) {
     if (!window.desktopAPI?.reminders) return;
     const approved = await confirm({
-      title: "Hatirlatmayi sil",
-      description: "Bu kayit kalici olarak silinecek.",
+      title: "Hatırlatmayı sil",
+      description: "Bu kayıt kalıcı olarak silinecek.",
       confirmLabel: "Sil"
     });
     if (!approved) return;
@@ -190,11 +190,11 @@ export default function RemindersPage() {
     try {
       await window.desktopAPI.reminders.delete(id);
       setReminders((prev) => prev.filter((item) => item.id !== id));
-      show({ type: "success", title: "Hatirlatma silindi" });
+      show({ type: "success", title: "Hatırlatma silindi" });
     } catch (err) {
       console.error(err);
-      setError("Hatirlatma silinemedi.");
-      show({ type: "error", title: "Silme basarisiz" });
+      setError("Hatırlatma silinemedi.");
+      show({ type: "error", title: "Silme başarısız" });
     }
   }
 
@@ -202,36 +202,34 @@ export default function RemindersPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Hatirlaticilar</h1>
-          <p className="mt-1 text-sm text-subtext">Gorev ve takip yonetimi</p>
+          <h1 className="page-title">Hatırlatıcılar</h1>
+          <p className="page-subtitle">Görev ve takip yönetimi</p>
         </div>
-        <Button onClick={() => openModal()}>Hatirlatma Ekle</Button>
+        <Button onClick={() => openModal()}>Hatırlatma Ekle</Button>
       </div>
 
-      <Card title="Filtreler" description="Durum, tarih ve musteriye gore filtrele">
+      <Card title="Filtreler" description="Durum, tarih ve müşteriye göre filtrele">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-          <select
+          <Select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as "ALL" | "COMPLETED" | "PENDING")}
-            className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
           >
-            <option value="ALL">Tum durumlar</option>
+            <option value="ALL">Tüm durumlar</option>
             <option value="PENDING">Bekleyen</option>
             <option value="COMPLETED">Tamamlanan</option>
-          </select>
+          </Select>
           <Input type="date" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)} />
-          <select
+          <Select
             value={customerFilter}
             onChange={(e) => setCustomerFilter(e.target.value)}
-            className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
           >
-            <option value="ALL">Tum musteriler</option>
+            <option value="ALL">Tüm müşteriler</option>
             {customers.map((customer) => (
               <option key={customer.id} value={customer.id}>
                 {customer.fullName}
               </option>
             ))}
-          </select>
+          </Select>
           <Button variant="secondary" onClick={() => void loadData()}>
             Yenile
           </Button>
@@ -239,22 +237,22 @@ export default function RemindersPage() {
       </Card>
 
       {error ? (
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <div className="app-error-box">
           {error}
         </div>
       ) : null}
 
-      <Card title="Gorev Listesi" description={`${filteredReminders.length} kayit`}>
+      <Card title="Görev Listesi" description={`${filteredReminders.length} kayıt`}>
         {loading ? (
-          <div className="text-sm text-subtext">Yukleniyor...</div>
+          <div className="text-sm text-subtext">Yükleniyor...</div>
         ) : filteredReminders.length === 0 ? (
-          <div className="text-sm text-subtext">Filtreye uygun hatirlatma yok.</div>
+          <EmptyState title="Filtreye uygun hatirlatma yok" />
         ) : (
           <div className="space-y-3">
             {filteredReminders.map((item) => (
               <div
                 key={item.id}
-                className="rounded-2xl border border-border bg-muted/30 px-4 py-3"
+                className="app-row"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
@@ -267,7 +265,7 @@ export default function RemindersPage() {
                     <p className="mt-1 text-xs text-subtext">{formatDate(item.dueDate)}</p>
                     {item.customerId ? (
                       <p className="mt-1 text-xs text-subtext">
-                        Musteri: {customerMap.get(item.customerId) ?? item.customerId}
+                        Müşteri: {customerMap.get(item.customerId) ?? item.customerId}
                       </p>
                     ) : null}
                     {item.description ? (
@@ -279,7 +277,7 @@ export default function RemindersPage() {
                       {item.isCompleted ? "Geri Al" : "Tamamla"}
                     </Button>
                     <Button variant="ghost" onClick={() => openModal(item)}>
-                      Duzenle
+                      Düzenle
                     </Button>
                     <Button variant="ghost" onClick={() => void deleteReminder(item.id)}>
                       Sil
@@ -294,7 +292,7 @@ export default function RemindersPage() {
 
       <Modal
         open={open}
-        title={form.id ? "Hatirlatma Duzenle" : "Hatirlatma Ekle"}
+        title={form.id ? "Hatırlatma Düzenle" : "Hatırlatma Ekle"}
         onClose={() => {
           setOpen(false);
           setForm(emptyReminderForm);
@@ -302,7 +300,7 @@ export default function RemindersPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm text-subtext">Baslik</label>
+            <label className="mb-2 block text-sm text-subtext">Başlık</label>
             <Input
               value={form.title}
               onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
@@ -318,26 +316,25 @@ export default function RemindersPage() {
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm text-subtext">Musteri</label>
-            <select
+            <label className="mb-2 block text-sm text-subtext">Müşteri</label>
+            <Select
               value={form.customerId}
               onChange={(e) => setForm((prev) => ({ ...prev, customerId: e.target.value }))}
-              className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
             >
-              <option value="">Secilmedi</option>
+              <option value="">Seçilmedi</option>
               {customers.map((customer) => (
                 <option key={customer.id} value={customer.id}>
                   {customer.fullName}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
           <div>
-            <label className="mb-2 block text-sm text-subtext">Aciklama</label>
+            <label className="mb-2 block text-sm text-subtext">Açıklama</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
-              className="min-h-[90px] w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
+              className="app-textarea text-sm"
             />
           </div>
           {form.id ? (
@@ -354,7 +351,7 @@ export default function RemindersPage() {
           ) : null}
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setOpen(false)}>
-              Vazgec
+              Vazgeç
             </Button>
             <Button onClick={() => void saveReminder()} disabled={saving}>
               {saving ? "Kaydediliyor..." : "Kaydet"}
@@ -364,12 +361,5 @@ export default function RemindersPage() {
       </Modal>
     </div>
   );
-=======
-export default function RemindersPage() {
-  return <main>Reminders Page</main>;
->>>>>>> theirs
-=======
-export default function RemindersPage() {
-  return <main>Reminders Page</main>;
->>>>>>> theirs
 }
+

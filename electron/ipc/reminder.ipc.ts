@@ -1,5 +1,3 @@
-<<<<<<< ours
-<<<<<<< ours
 import { ipcMain } from "electron";
 import { db } from "../lib/db";
 import type { CreateReminderInput, UpdateReminderInput } from "../../shared/reminder";
@@ -131,9 +129,3 @@ export function registerReminderIpc() {
     return { success: true };
   });
 }
-=======
-export {};
->>>>>>> theirs
-=======
-export {};
->>>>>>> theirs

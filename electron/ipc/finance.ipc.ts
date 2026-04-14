@@ -1,5 +1,3 @@
-<<<<<<< ours
-<<<<<<< ours
 import { ipcMain } from "electron";
 import { db } from "../lib/db";
 import type {
@@ -246,9 +244,3 @@ export function registerFinanceIpc() {
     return { success: true };
   });
 }
-=======
-export {};
->>>>>>> theirs
-=======
-export {};
->>>>>>> theirs

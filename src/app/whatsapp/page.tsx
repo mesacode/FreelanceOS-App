@@ -1,10 +1,9 @@
-<<<<<<< ours
-<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
 import Input from "../../components/ui/input";
 import Modal from "../../components/ui/modal";
+import EmptyState from "../../components/ui/empty-state";
 import { useConfirm } from "../../components/ui/confirm-provider";
 import { useToast } from "../../components/ui/toast-provider";
 import type {
@@ -46,7 +45,7 @@ export default function WhatsappPage() {
 
   async function loadTemplates() {
     if (!window.desktopAPI?.whatsapp) {
-      setError("Desktop API bulunamadi. Uygulamayi Electron ile acin.");
+      setError("Desktop API bulunamadı. Uygulamayı Electron ile açın.");
       setLoading(false);
       return;
     }
@@ -58,7 +57,7 @@ export default function WhatsappPage() {
       setTemplates(data);
     } catch (err) {
       console.error(err);
-      setError("Sablonlar yuklenemedi.");
+      setError("Şablonlar yüklenemedi.");
     } finally {
       setLoading(false);
     }
@@ -95,7 +94,7 @@ export default function WhatsappPage() {
   async function saveTemplate() {
     if (!window.desktopAPI?.whatsapp) return;
     if (!form.name.trim() || !form.content.trim()) {
-      setError("Sablon adi ve icerigi zorunludur.");
+      setError("Şablon adı ve içeriği zorunludur.");
       return;
     }
 
@@ -113,19 +112,19 @@ export default function WhatsappPage() {
           id: form.id
         });
         setTemplates((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
-        show({ type: "success", title: "Sablon guncellendi" });
+        show({ type: "success", title: "Şablon güncellendi" });
       } else {
         const created = await window.desktopAPI.whatsapp.create(payload);
         setTemplates((prev) => [created, ...prev]);
-        show({ type: "success", title: "Sablon eklendi" });
+        show({ type: "success", title: "Şablon eklendi" });
       }
       setOpen(false);
       setForm(emptyTemplateForm);
     } catch (err) {
       console.error(err);
-      const message = err instanceof Error ? err.message : "Sablon kaydedilemedi.";
+      const message = err instanceof Error ? err.message : "Şablon kaydedilemedi.";
       setError(message);
-      show({ type: "error", title: "Kayit basarisiz", description: message });
+      show({ type: "error", title: "Kayit başarısız", description: message });
     } finally {
       setSaving(false);
     }
@@ -134,8 +133,8 @@ export default function WhatsappPage() {
   async function deleteTemplate(id: string) {
     if (!window.desktopAPI?.whatsapp) return;
     const approved = await confirm({
-      title: "Sablonu sil",
-      description: "Bu kayit geri alinamaz.",
+      title: "Şablonu sil",
+      description: "Bu kayıt geri alınamaz.",
       confirmLabel: "Sil"
     });
     if (!approved) return;
@@ -143,11 +142,11 @@ export default function WhatsappPage() {
     try {
       await window.desktopAPI.whatsapp.delete(id);
       setTemplates((prev) => prev.filter((item) => item.id !== id));
-      show({ type: "success", title: "Sablon silindi" });
+      show({ type: "success", title: "Şablon silindi" });
     } catch (err) {
       console.error(err);
-      setError("Sablon silinemedi.");
-      show({ type: "error", title: "Silme basarisiz" });
+      setError("Şablon silinemedi.");
+      show({ type: "error", title: "Silme başarısız" });
     }
   }
 
@@ -155,49 +154,49 @@ export default function WhatsappPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">WhatsApp</h1>
-          <p className="mt-1 text-sm text-subtext">Mesaj sablonlari ve hizli kullanim</p>
+          <h1 className="page-title">WhatsApp</h1>
+          <p className="page-subtitle">Mesaj şablonları ve hızlı kullanım</p>
         </div>
-        <Button onClick={() => openModal()}>Yeni Sablon</Button>
+        <Button onClick={() => openModal()}>Yeni Şablon</Button>
       </div>
 
       <Card title="Arama">
         <Input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Sablon adinda veya icerikte ara"
+          placeholder="Şablon adında veya içerikte ara"
         />
       </Card>
 
       {error ? (
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <div className="app-error-box">
           {error}
         </div>
       ) : null}
 
-      <Card title="Mesaj Sablonlari" description={`${filteredTemplates.length} kayit`}>
+      <Card title="Mesaj Şablonları" description={`${filteredTemplates.length} kayıt`}>
         {loading ? (
-          <div className="text-sm text-subtext">Yukleniyor...</div>
+          <div className="text-sm text-subtext">Yükleniyor...</div>
         ) : filteredTemplates.length === 0 ? (
-          <div className="text-sm text-subtext">Aramaya uygun sablon yok.</div>
+          <EmptyState title="Aramaya uygun sablon yok" />
         ) : (
           <div className="space-y-3">
             {filteredTemplates.map((item) => (
               <div
                 key={item.id}
-                className="rounded-2xl border border-border bg-muted/30 px-4 py-3"
+                className="app-row"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <p className="font-medium">{item.name}</p>
                     <p className="mt-1 text-xs text-subtext">
-                      Son guncelleme: {formatDate(item.updatedAt)}
+                      Son güncelleme: {formatDate(item.updatedAt)}
                     </p>
                     <p className="mt-2 whitespace-pre-wrap text-sm text-subtext">{item.content}</p>
                   </div>
                   <div className="flex gap-2">
                     <Button variant="ghost" onClick={() => openModal(item)}>
-                      Duzenle
+                      Düzenle
                     </Button>
                     <Button variant="ghost" onClick={() => void deleteTemplate(item.id)}>
                       Sil
@@ -212,7 +211,7 @@ export default function WhatsappPage() {
 
       <Modal
         open={open}
-        title={form.id ? "Sablon Duzenle" : "Yeni Sablon"}
+        title={form.id ? "Şablon Düzenle" : "Yeni Şablon"}
         onClose={() => {
           setOpen(false);
           setForm(emptyTemplateForm);
@@ -220,24 +219,24 @@ export default function WhatsappPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm text-subtext">Sablon Adi</label>
+            <label className="mb-2 block text-sm text-subtext">Şablon Adı</label>
             <Input
               value={form.name}
               onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
-              placeholder="Orn. Odeme Hatirlatmasi"
+              placeholder="Örn. Ödeme Hatırlatması"
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm text-subtext">Mesaj Icerigi</label>
+            <label className="mb-2 block text-sm text-subtext">Mesaj İçeriği</label>
             <textarea
               value={form.content}
               onChange={(e) => setForm((prev) => ({ ...prev, content: e.target.value }))}
-              className="min-h-[140px] w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
+              className="app-textarea min-h-[140px] text-sm"
             />
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setOpen(false)}>
-              Vazgec
+              aazgec
             </Button>
             <Button onClick={() => void saveTemplate()} disabled={saving}>
               {saving ? "Kaydediliyor..." : "Kaydet"}
@@ -247,12 +246,5 @@ export default function WhatsappPage() {
       </Modal>
     </div>
   );
-=======
-export default function WhatsappPage() {
-  return <main>Whatsapp Page</main>;
->>>>>>> theirs
-=======
-export default function WhatsappPage() {
-  return <main>Whatsapp Page</main>;
->>>>>>> theirs
 }
+

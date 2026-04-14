@@ -74,42 +74,42 @@ export function registerDashboardIpc() {
     const activities = [
       ...customers.map((item) => ({
         id: `customer-${item.id}`,
-        title: "Musteri guncellendi",
+        title: "Müşteri güncellendi",
         description: item.fullName,
         createdAt: toActivityTime(item.updatedAt),
         entityType: "CUSTOMER" as const
       })),
       ...incomes.map((item) => ({
         id: `income-${item.id}`,
-        title: "Gelir kaydi",
+        title: "Gelir kaydı",
         description: item.title,
         createdAt: toActivityTime(item.createdAt),
         entityType: "INCOME" as const
       })),
       ...expenses.map((item) => ({
         id: `expense-${item.id}`,
-        title: "Gider kaydi",
+        title: "Gider kaydı",
         description: item.title,
         createdAt: toActivityTime(item.createdAt),
         entityType: "EXPENSE" as const
       })),
       ...reminders.map((item) => ({
         id: `reminder-${item.id}`,
-        title: "Hatirlatma",
+        title: "Hatırlatma",
         description: item.title,
         createdAt: toActivityTime(item.createdAt),
         entityType: "REMINDER" as const
       })),
       ...templates.map((item) => ({
         id: `template-${item.id}`,
-        title: "WhatsApp sablonu",
+        title: "WhatsApp şablonu",
         description: item.name,
         createdAt: toActivityTime(item.updatedAt),
         entityType: "WHATSAPP_TEMPLATE" as const
       })),
       ...settings.map((item) => ({
         id: `setting-${item.id}`,
-        title: "Ayar guncellendi",
+        title: "Ayar güncellendi",
         description: item.key,
         createdAt: toActivityTime(item.updatedAt),
         entityType: "SETTING" as const

@@ -1,9 +1,8 @@
-<<<<<<< ours
-<<<<<<< ours
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
 import Input from "../../components/ui/input";
+import EmptyState from "../../components/ui/empty-state";
 import { useConfirm } from "../../components/ui/confirm-provider";
 import { useToast } from "../../components/ui/toast-provider";
 import type { SettingItem } from "../../../shared/settings";
@@ -28,7 +27,7 @@ export default function SettingsPage() {
 
   async function loadSettings() {
     if (!window.desktopAPI?.settings) {
-      setError("Desktop API bulunamadi. Uygulamayi Electron ile acin.");
+      setError("Desktop API bulunamadı. Uygulamayı Electron ile açın.");
       setLoading(false);
       return;
     }
@@ -53,7 +52,7 @@ export default function SettingsPage() {
       setSettings(ensured);
     } catch (err) {
       console.error(err);
-      setError("Ayarlar yuklenemedi.");
+      setError("Ayarlar yüklenemedi.");
     } finally {
       setLoading(false);
     }
@@ -82,11 +81,11 @@ export default function SettingsPage() {
       setError("");
       const updated = await window.desktopAPI.settings.upsert({ key, value });
       setSettings((prev) => prev.map((item) => (item.key === key ? updated : item)));
-      show({ type: "success", title: `${key} guncellendi` });
+      show({ type: "success", title: `${key} güncellendi` });
     } catch (err) {
       console.error(err);
-      setError("Ayar guncellenemedi.");
-      show({ type: "error", title: "Guncelleme basarisiz" });
+      setError("Ayar güncellenemedi.");
+      show({ type: "error", title: "Güncelleme başarısız" });
     } finally {
       setSavingKey(null);
     }
@@ -95,7 +94,7 @@ export default function SettingsPage() {
   async function addSetting() {
     if (!window.desktopAPI?.settings) return;
     if (!newSetting.key.trim()) {
-      setError("Yeni ayar icin anahtar zorunludur.");
+      setError("Yeni ayar için anahtar zorunludur.");
       return;
     }
     try {
@@ -117,7 +116,7 @@ export default function SettingsPage() {
     } catch (err) {
       console.error(err);
       setError("Yeni ayar eklenemedi.");
-      show({ type: "error", title: "Kayit basarisiz" });
+      show({ type: "error", title: "Kayıt başarısız" });
     } finally {
       setSavingKey(null);
     }
@@ -126,12 +125,12 @@ export default function SettingsPage() {
   async function deleteSetting(key: string) {
     if (!window.desktopAPI?.settings) return;
     if (defaultKeys.includes(key)) {
-      setError("Varsayilan ayarlar silinemez.");
+      setError("Varsayılan ayarlar silinemez.");
       return;
     }
     const approved = await confirm({
-      title: "Ayari sil",
-      description: `${key} anahtari kalici olarak silinecek.`,
+      title: "Ayarı sil",
+      description: `${key} anahtarı kalıcı olarak silinecek.`,
       confirmLabel: "Sil"
     });
     if (!approved) return;
@@ -143,34 +142,30 @@ export default function SettingsPage() {
     } catch (err) {
       console.error(err);
       setError("Ayar silinemedi.");
-      show({ type: "error", title: "Silme basarisiz" });
+      show({ type: "error", title: "Silme başarısız" });
     }
   }
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Ayarlar</h1>
-        <p className="mt-1 text-sm text-subtext">Uygulama tercihleri ve genel ayarlar</p>
+        <h1 className="page-title">Ayarlar</h1>
+        <p className="page-subtitle">Uygulama tercihleri ve genel ayarlar</p>
       </div>
 
-      {error ? (
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-          {error}
-        </div>
-      ) : null}
+      {error ? <div className="app-error-box">{error}</div> : null}
 
       <Card title="Yeni Ayar">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-[1fr_1fr_auto]">
           <Input
             value={newSetting.key}
             onChange={(e) => setNewSetting((prev) => ({ ...prev, key: e.target.value }))}
-            placeholder="Ayar anahtari"
+            placeholder="Ayar anahtarı"
           />
           <Input
             value={newSetting.value}
             onChange={(e) => setNewSetting((prev) => ({ ...prev, value: e.target.value }))}
-            placeholder="Deger"
+            placeholder="Değer"
           />
           <Button onClick={() => void addSetting()} disabled={Boolean(savingKey)}>
             Ekle
@@ -186,18 +181,15 @@ export default function SettingsPage() {
         />
       </Card>
 
-      <Card title="Tum Ayarlar" description={`${filteredSettings.length} kayit`}>
+      <Card title="Tüm Ayarlar" description={`${filteredSettings.length} kayıt`}>
         {loading ? (
-          <div className="text-sm text-subtext">Yukleniyor...</div>
+          <div className="text-sm text-subtext">Yükleniyor...</div>
         ) : filteredSettings.length === 0 ? (
-          <div className="text-sm text-subtext">Aramaya uygun ayar yok.</div>
+          <EmptyState title="Aramaya uygun ayar yok" />
         ) : (
           <div className="space-y-3">
             {filteredSettings.map((item) => (
-              <div
-                key={item.key}
-                className="rounded-2xl border border-border bg-muted/30 px-4 py-3"
-              >
+              <div key={item.key} className="app-row">
                 <div className="grid grid-cols-1 gap-3 md:grid-cols-[220px_1fr_auto] md:items-center">
                   <div className="text-sm font-medium text-text">{item.key}</div>
                   <Input
@@ -232,12 +224,4 @@ export default function SettingsPage() {
       </Card>
     </div>
   );
-=======
-export default function SettingsPage() {
-  return <main>Settings Page</main>;
->>>>>>> theirs
-=======
-export default function SettingsPage() {
-  return <main>Settings Page</main>;
->>>>>>> theirs
 }

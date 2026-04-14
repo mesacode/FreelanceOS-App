@@ -1,16 +1,13 @@
-import type { InputHTMLAttributes } from "react";
 import clsx from "clsx";
+import type { SelectHTMLAttributes } from "react";
 
-export default function Input({
-  className,
-  style,
-  ...props
-}: InputHTMLAttributes<HTMLInputElement>) {
+type SelectProps = SelectHTMLAttributes<HTMLSelectElement>;
+
+export default function Select({ className, children, style, ...props }: SelectProps) {
   return (
-    <input
+    <select
       className={clsx(
         "w-full rounded-lg px-4 py-2.5 text-sm outline-none transition-all duration-200 focus:ring-2",
-        "placeholder:text-[var(--foreground-tertiary)]",
         className
       )}
       style={{
@@ -22,6 +19,8 @@ export default function Input({
         ...style
       }}
       {...props}
-    />
+    >
+      {children}
+    </select>
   );
 }

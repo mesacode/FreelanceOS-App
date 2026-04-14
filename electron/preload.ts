@@ -1,5 +1,3 @@
-<<<<<<< ours
-<<<<<<< ours
 import { contextBridge, ipcRenderer } from "electron";
 import type {
   CreateCustomerInput,
@@ -21,6 +19,18 @@ import type { UpsertSettingInput } from "../shared/settings";
 contextBridge.exposeInMainWorld("desktopAPI", {
   appName: "FreelanceOS",
   version: "0.1.0",
+  platform: process.platform,
+  windowControls: {
+    minimize: () => ipcRenderer.invoke("window:minimize"),
+    toggleMaximize: () => ipcRenderer.invoke("window:toggle-maximize"),
+    close: () => ipcRenderer.invoke("window:close"),
+    isMaximized: () => ipcRenderer.invoke("window:is-maximized"),
+    onMaximizedChanged: (callback: (isMaximized: boolean) => void) => {
+      const listener = (_event: unknown, value: boolean) => callback(value);
+      ipcRenderer.on("window:maximized-changed", listener);
+      return () => ipcRenderer.removeListener("window:maximized-changed", listener);
+    }
+  },
 
   customers: {
     list: () => ipcRenderer.invoke("customers:list"),
@@ -79,9 +89,3 @@ contextBridge.exposeInMainWorld("desktopAPI", {
     activities: () => ipcRenderer.invoke("dashboard:activities")
   }
 });
-=======
-export {};
->>>>>>> theirs
-=======
-export {};
->>>>>>> theirs

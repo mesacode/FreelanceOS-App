@@ -1,11 +1,11 @@
-<<<<<<< ours
-<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/ui/button";
 import Card from "../../components/ui/card";
 import Input from "../../components/ui/input";
 import Modal from "../../components/ui/modal";
 import Badge from "../../components/ui/badge";
+import Select from "../../components/ui/select";
+import EmptyState from "../../components/ui/empty-state";
 import { useConfirm } from "../../components/ui/confirm-provider";
 import { useToast } from "../../components/ui/toast-provider";
 import type { Customer } from "../../../shared/customer";
@@ -119,7 +119,7 @@ export default function FinancesPage() {
 
   async function loadData() {
     if (!window.desktopAPI?.finances) {
-      setError("Desktop API bulunamadi. Uygulamayi Electron ile acin.");
+      setError("Desktop API bulunamadı. Uygulamayı Electron ile açın.");
       setLoading(false);
       return;
     }
@@ -137,7 +137,7 @@ export default function FinancesPage() {
       setCustomers(customerData);
     } catch (err) {
       console.error(err);
-      setError("Finans kayitlari yuklenemedi.");
+      setError("Finans kayıtları yüklenemedi.");
     } finally {
       setLoading(false);
     }
@@ -222,13 +222,13 @@ export default function FinancesPage() {
   async function saveIncome() {
     if (!window.desktopAPI?.finances) return;
     if (!incomeForm.title.trim() || !incomeForm.amount || !incomeForm.date) {
-      setError("Gelir icin baslik, tutar ve tarih zorunludur.");
+      setError("Gelir için başlık, tutar ve tarih zorunludur.");
       return;
     }
 
     const amount = Number(incomeForm.amount);
     if (!Number.isFinite(amount) || amount <= 0) {
-      setError("Gelir tutari sifirdan buyuk olmali.");
+      setError("Gelir tutarı sıfırdan büyük olmalı.");
       return;
     }
 
@@ -249,19 +249,19 @@ export default function FinancesPage() {
           id: incomeForm.id
         });
         setIncomes((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
-        show({ type: "success", title: "Gelir guncellendi" });
+        show({ type: "success", title: "Gelir güncellendi" });
       } else {
         const created = await window.desktopAPI.finances.incomes.create(payload);
         setIncomes((prev) => [created, ...prev]);
-        show({ type: "success", title: "Gelir kaydi eklendi" });
+        show({ type: "success", title: "Gelir kaydı eklendi" });
       }
       setIncomeModalOpen(false);
       setIncomeForm(emptyIncomeForm);
     } catch (err) {
       console.error(err);
-      const message = err instanceof Error ? err.message : "Gelir kaydi kaydedilemedi.";
+      const message = err instanceof Error ? err.message : "Gelir kaydı kaydedilemedi.";
       setError(message);
-      show({ type: "error", title: "Kayit basarisiz", description: message });
+      show({ type: "error", title: "Kayit başarısız", description: message });
     } finally {
       setSaving(false);
     }
@@ -270,13 +270,13 @@ export default function FinancesPage() {
   async function saveExpense() {
     if (!window.desktopAPI?.finances) return;
     if (!expenseForm.title.trim() || !expenseForm.amount || !expenseForm.date) {
-      setError("Gider icin baslik, tutar ve tarih zorunludur.");
+      setError("Gider için başlık, tutar ve tarih zorunludur.");
       return;
     }
 
     const amount = Number(expenseForm.amount);
     if (!Number.isFinite(amount) || amount <= 0) {
-      setError("Gider tutari sifirdan buyuk olmali.");
+      setError("Gider tutarı sıfırdan büyük olmalı.");
       return;
     }
 
@@ -298,19 +298,19 @@ export default function FinancesPage() {
           id: expenseForm.id
         });
         setExpenses((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
-        show({ type: "success", title: "Gider guncellendi" });
+        show({ type: "success", title: "Gider güncellendi" });
       } else {
         const created = await window.desktopAPI.finances.expenses.create(payload);
         setExpenses((prev) => [created, ...prev]);
-        show({ type: "success", title: "Gider kaydi eklendi" });
+        show({ type: "success", title: "Gider kaydı eklendi" });
       }
       setExpenseModalOpen(false);
       setExpenseForm(emptyExpenseForm);
     } catch (err) {
       console.error(err);
-      const message = err instanceof Error ? err.message : "Gider kaydi kaydedilemedi.";
+      const message = err instanceof Error ? err.message : "Gider kaydı kaydedilemedi.";
       setError(message);
-      show({ type: "error", title: "Kayit basarisiz", description: message });
+      show({ type: "error", title: "Kayit başarısız", description: message });
     } finally {
       setSaving(false);
     }
@@ -319,8 +319,8 @@ export default function FinancesPage() {
   async function deleteIncome(id: string) {
     if (!window.desktopAPI?.finances) return;
     const approved = await confirm({
-      title: "Gelir kaydini sil",
-      description: "Bu islem geri alinamaz.",
+      title: "Gelir kaydını sil",
+      description: "Bu islem geri alınamaz.",
       confirmLabel: "Sil"
     });
     if (!approved) return;
@@ -331,16 +331,16 @@ export default function FinancesPage() {
       show({ type: "success", title: "Gelir silindi" });
     } catch (err) {
       console.error(err);
-      setError("Gelir kaydi silinemedi.");
-      show({ type: "error", title: "Silme basarisiz" });
+      setError("Gelir kaydı silinemedi.");
+      show({ type: "error", title: "Silme başarısız" });
     }
   }
 
   async function deleteExpense(id: string) {
     if (!window.desktopAPI?.finances) return;
     const approved = await confirm({
-      title: "Gider kaydini sil",
-      description: "Bu islem geri alinamaz.",
+      title: "Gider kaydını sil",
+      description: "Bu islem geri alınamaz.",
       confirmLabel: "Sil"
     });
     if (!approved) return;
@@ -351,8 +351,8 @@ export default function FinancesPage() {
       show({ type: "success", title: "Gider silindi" });
     } catch (err) {
       console.error(err);
-      setError("Gider kaydi silinemedi.");
-      show({ type: "error", title: "Silme basarisiz" });
+      setError("Gider kaydı silinemedi.");
+      show({ type: "error", title: "Silme başarısız" });
     }
   }
 
@@ -360,8 +360,8 @@ export default function FinancesPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Finans</h1>
-          <p className="mt-1 text-sm text-subtext">Gelir ve gider yonetimi</p>
+          <h1 className="page-title">Finans</h1>
+          <p className="page-subtitle">Gelir ve gider yönetimi</p>
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" onClick={() => openExpenseModal()}>
@@ -383,48 +383,52 @@ export default function FinancesPage() {
         </Card>
       </div>
 
-      <Card title="Filtreler" description="Tip, tarih araligi ve tutar siralama">
+      <Card title="Filtreler" description="Tip, tarih aralığı ve tutar sıralaması">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
-          <select
+          <Select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value as "ALL" | "INCOME" | "EXPENSE")}
-            className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
           >
-            <option value="ALL">Tum tipler</option>
+            <option value="ALL">Tüm tipler</option>
             <option value="INCOME">Sadece gelir</option>
             <option value="EXPENSE">Sadece gider</option>
-          </select>
+          </Select>
           <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
           <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-          <select
+          <Select
             value={sortByAmount}
             onChange={(e) =>
               setSortByAmount(e.target.value as "DATE_DESC" | "AMOUNT_ASC" | "AMOUNT_DESC")
             }
-            className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
           >
             <option value="DATE_DESC">Tarih (yeni-eski)</option>
-            <option value="AMOUNT_DESC">Tutar (buyuk-kucuk)</option>
-            <option value="AMOUNT_ASC">Tutar (kucuk-buyuk)</option>
-          </select>
+            <option value="AMOUNT_DESC">Tutar (büyük-kucuk)</option>
+            <option value="AMOUNT_ASC">Tutar (kucuk-büyük)</option>
+          </Select>
         </div>
       </Card>
 
       {error ? (
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <div className="app-error-box">
           {error}
         </div>
       ) : null}
 
-      <Card title="Finans Hareketleri" description={`${filteredRows.length} kayit`}>
+      <Card title="Finans Hareketleri" description={`${filteredRows.length} kayıt`}>
         {loading ? (
-          <div className="text-sm text-subtext">Yukleniyor...</div>
+          <div className="text-sm text-subtext">Yükleniyor...</div>
         ) : filteredRows.length === 0 ? (
-          <div className="text-sm text-subtext">Filtreye uygun hareket yok.</div>
+          <EmptyState
+            title="Filtreye uygun hareket yok"
+            description="Yeni bir gelir ya da gider ekleyerek baslayabilirsin."
+          />
         ) : (
           <div className="space-y-3">
             {filteredRows.map((row) => (
-              <div key={`${row.itemType}-${row.id}`} className="rounded-2xl border border-border bg-muted/30 px-4 py-3">
+              <div
+                key={`${row.itemType}-${row.id}`}
+                className="app-row"
+              >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <div className="flex items-center gap-2">
@@ -436,7 +440,7 @@ export default function FinancesPage() {
                     <p className="mt-1 text-xs text-subtext">{formatDate(row.date)}</p>
                     {row.customerId ? (
                       <p className="mt-1 text-xs text-subtext">
-                        Musteri: {customerMap.get(row.customerId) ?? row.customerId}
+                        Müşteri: {customerMap.get(row.customerId) ?? row.customerId}
                       </p>
                     ) : null}
                     {row.note ? <p className="mt-2 text-sm text-subtext">{row.note}</p> : null}
@@ -461,7 +465,7 @@ export default function FinancesPage() {
                               openIncomeModal(incomes.find((item) => item.id === row.id))
                             }
                           >
-                            Duzenle
+                            Düzenle
                           </Button>
                           <Button variant="ghost" onClick={() => void deleteIncome(row.id)}>
                             Sil
@@ -475,7 +479,7 @@ export default function FinancesPage() {
                               openExpenseModal(expenses.find((item) => item.id === row.id))
                             }
                           >
-                            Duzenle
+                            Düzenle
                           </Button>
                           <Button variant="ghost" onClick={() => void deleteExpense(row.id)}>
                             Sil
@@ -493,7 +497,7 @@ export default function FinancesPage() {
 
       <Modal
         open={incomeModalOpen}
-        title={incomeForm.id ? "Gelir Duzenle" : "Gelir Ekle"}
+        title={incomeForm.id ? "Gelir Düzenle" : "Gelir Ekle"}
         onClose={() => {
           setIncomeModalOpen(false);
           setIncomeForm(emptyIncomeForm);
@@ -501,7 +505,7 @@ export default function FinancesPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm text-subtext">Baslik</label>
+            <label className="mb-2 block text-sm text-subtext">Başlık</label>
             <Input
               value={incomeForm.title}
               onChange={(e) => setIncomeForm((prev) => ({ ...prev, title: e.target.value }))}
@@ -529,33 +533,32 @@ export default function FinancesPage() {
             </div>
           </div>
           <div>
-            <label className="mb-2 block text-sm text-subtext">Bagli musteri</label>
-            <select
+            <label className="mb-2 block text-sm text-subtext">Bağlı müşteri</label>
+            <Select
               value={incomeForm.customerId}
               onChange={(e) =>
                 setIncomeForm((prev) => ({ ...prev, customerId: e.target.value }))
               }
-              className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
             >
-              <option value="">Secilmedi</option>
+              <option value="">Seçilmedi</option>
               {customers.map((customer) => (
                 <option key={customer.id} value={customer.id}>
                   {customer.fullName}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
           <div>
             <label className="mb-2 block text-sm text-subtext">Not</label>
             <textarea
               value={incomeForm.note}
               onChange={(e) => setIncomeForm((prev) => ({ ...prev, note: e.target.value }))}
-              className="min-h-[90px] w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
+              className="app-textarea text-sm"
             />
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setIncomeModalOpen(false)}>
-              Vazgec
+              Vazgeç
             </Button>
             <Button onClick={() => void saveIncome()} disabled={saving}>
               {saving ? "Kaydediliyor..." : "Kaydet"}
@@ -566,7 +569,7 @@ export default function FinancesPage() {
 
       <Modal
         open={expenseModalOpen}
-        title={expenseForm.id ? "Gider Duzenle" : "Gider Ekle"}
+        title={expenseForm.id ? "Gider Düzenle" : "Gider Ekle"}
         onClose={() => {
           setExpenseModalOpen(false);
           setExpenseForm(emptyExpenseForm);
@@ -574,7 +577,7 @@ export default function FinancesPage() {
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-2 block text-sm text-subtext">Baslik</label>
+            <label className="mb-2 block text-sm text-subtext">Başlık</label>
             <Input
               value={expenseForm.title}
               onChange={(e) => setExpenseForm((prev) => ({ ...prev, title: e.target.value }))}
@@ -612,33 +615,32 @@ export default function FinancesPage() {
             />
           </div>
           <div>
-            <label className="mb-2 block text-sm text-subtext">Bagli musteri</label>
-            <select
+            <label className="mb-2 block text-sm text-subtext">Bağlı müşteri</label>
+            <Select
               value={expenseForm.customerId}
               onChange={(e) =>
                 setExpenseForm((prev) => ({ ...prev, customerId: e.target.value }))
               }
-              className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
             >
-              <option value="">Secilmedi</option>
+              <option value="">Seçilmedi</option>
               {customers.map((customer) => (
                 <option key={customer.id} value={customer.id}>
                   {customer.fullName}
                 </option>
               ))}
-            </select>
+            </Select>
           </div>
           <div>
             <label className="mb-2 block text-sm text-subtext">Not</label>
             <textarea
               value={expenseForm.note}
               onChange={(e) => setExpenseForm((prev) => ({ ...prev, note: e.target.value }))}
-              className="min-h-[90px] w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
+              className="app-textarea text-sm"
             />
           </div>
           <div className="flex justify-end gap-2">
             <Button variant="secondary" onClick={() => setExpenseModalOpen(false)}>
-              Vazgec
+              Vazgeç
             </Button>
             <Button onClick={() => void saveExpense()} disabled={saving}>
               {saving ? "Kaydediliyor..." : "Kaydet"}
@@ -648,12 +650,5 @@ export default function FinancesPage() {
       </Modal>
     </div>
   );
-=======
-export default function FinancesPage() {
-  return <main>Finances Page</main>;
->>>>>>> theirs
-=======
-export default function FinancesPage() {
-  return <main>Finances Page</main>;
->>>>>>> theirs
 }
+

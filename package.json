@@ -2,13 +2,11 @@
   "name": "freelanceos",
   "version": "0.1.0",
   "private": true,
-<<<<<<< ours
-<<<<<<< ours
-  "main": "dist-electron/main.js",
+  "main": "dist-electron/electron/main.js",
   "scripts": {
-    "dev": "concurrently \"vite\" \"tsc -p electron/tsconfig.json --watch\" \"wait-on tcp:5173 && electron .\"",
+    "dev": "concurrently \"vite --strictPort --port 5173\" \"tsc -p electron/tsconfig.json --watch\" \"wait-on tcp:5173 && set ELECTRON_RUN_AS_NODE=&& electron .\"",
     "build": "vite build && tsc -p electron/tsconfig.json",
-    "start": "electron .",
+    "start": "set ELECTRON_RUN_AS_NODE=&& electron .",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init"
   },
@@ -36,32 +34,5 @@
     "typescript": "^6.0.2",
     "vite": "^6.0.0",
     "wait-on": "^8.0.0"
-=======
-=======
->>>>>>> theirs
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {
-    "@types/react": "^18.3.9",
-    "@types/react-dom": "^18.3.0",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.15",
-    "typescript": "^5.6.3",
-    "vite": "^5.4.10",
-    "@vitejs/plugin-react": "^4.3.3"
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
   }
 }

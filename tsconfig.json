@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-<<<<<<< ours
-<<<<<<< ours
     "target": "ES2020",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
@@ -22,25 +20,4 @@
     "types": ["vite/client"]
   },
   "include": ["src", "shared/**/*.ts"]
-=======
-=======
->>>>>>> theirs
-    "target": "ES2022",
-    "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "types": ["vite/client"],
-    "skipLibCheck": true
-  },
-  "include": ["src", "electron", "vite-env.d.ts"]
-<<<<<<< ours
->>>>>>> theirs
-=======
->>>>>>> theirs
 }

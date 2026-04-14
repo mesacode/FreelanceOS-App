@@ -1,5 +1,3 @@
-<<<<<<< ours
-<<<<<<< ours
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/button";
@@ -7,6 +5,9 @@ import Card from "../../components/ui/card";
 import Input from "../../components/ui/input";
 import Modal from "../../components/ui/modal";
 import Badge from "../../components/ui/badge";
+import Select from "../../components/ui/select";
+import EmptyState from "../../components/ui/empty-state";
+import { Table, TableHeadRow, TableRow } from "../../components/ui/table";
 import { useToast } from "../../components/ui/toast-provider";
 import { useConfirm } from "../../components/ui/confirm-provider";
 import type {
@@ -67,7 +68,7 @@ export default function CustomersPage() {
 
   async function loadCustomers() {
     if (!window.desktopAPI?.customers) {
-      setError("Desktop API bulunamadi. Uygulamayi Electron uzerinden acin.");
+      setError("Desktop API bulunamadı. Uygulamayı Electron üzerinden açın.");
       setPageLoading(false);
       return;
     }
@@ -79,7 +80,7 @@ export default function CustomersPage() {
       setCustomers(data);
     } catch (err) {
       console.error(err);
-      setError("Musteriler yuklenemedi.");
+      setError("Müşteriler yüklenemedi.");
     } finally {
       setPageLoading(false);
     }
@@ -162,36 +163,36 @@ export default function CustomersPage() {
         const payload: UpdateCustomerInput = {
           id: form.id,
           fullName: form.fullName.trim(),
-          email: form.email.trim() || undefined,
-          phone: form.phone.trim() || undefined,
-          company: form.company.trim() || undefined,
-          notes: form.notes.trim() || undefined,
+          email: form.email?.trim() || undefined,
+          phone: form.phone?.trim() || undefined,
+          company: form.company?.trim() || undefined,
+          notes: form.notes?.trim() || undefined,
           status: form.status,
           lastContactAt: form.lastContactAt ? new Date(form.lastContactAt).toISOString() : null
         };
         const updated = await window.desktopAPI.customers.update(payload);
         setCustomers((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));
-        show({ type: "success", title: "Musteri guncellendi" });
+        show({ type: "success", title: "Müşteri güncellendi" });
       } else {
         const payload: CreateCustomerInput = {
           fullName: form.fullName.trim(),
-          email: form.email.trim() || undefined,
-          phone: form.phone.trim() || undefined,
-          company: form.company.trim() || undefined,
-          notes: form.notes.trim() || undefined,
+          email: form.email?.trim() || undefined,
+          phone: form.phone?.trim() || undefined,
+          company: form.company?.trim() || undefined,
+          notes: form.notes?.trim() || undefined,
           status: form.status
         };
         const created = await window.desktopAPI.customers.create(payload);
         setCustomers((prev) => [created, ...prev]);
-        show({ type: "success", title: "Musteri olusturuldu" });
+        show({ type: "success", title: "Müşteri oluşturuldu" });
       }
 
       setForm(initialForm);
       setOpen(false);
     } catch (err) {
       console.error(err);
-      setError(err instanceof Error ? err.message : "Musteri kaydedilemedi.");
-      show({ type: "error", title: "Kayit basarisiz" });
+      setError(err instanceof Error ? err.message : "Müşteri kaydedilemedi.");
+      show({ type: "error", title: "Kayit başarısız" });
     } finally {
       setSaving(false);
     }
@@ -199,24 +200,24 @@ export default function CustomersPage() {
 
   async function handleDeleteCustomer(id: string) {
     const approved = await confirm({
-      title: "Musteriyi sil",
-      description: "Bu kayit kalici olarak silinecek. Devam etmek istiyor musun?",
+      title: "Müşteriyi sil",
+      description: "Bu kayıt kalıcı olarak silinecek. Devam etmek istiyor musun?",
       confirmLabel: "Sil"
     });
     if (!approved) return;
 
     try {
       if (!window.desktopAPI?.customers) {
-        throw new Error("Desktop API bulunamadi.");
+        throw new Error("Desktop API bulunamadı.");
       }
 
       await window.desktopAPI.customers.delete(id);
       setCustomers((prev) => prev.filter((customer) => customer.id !== id));
-      show({ type: "success", title: "Musteri silindi" });
+      show({ type: "success", title: "Müşteri silindi" });
     } catch (err) {
       console.error(err);
-      setError("Musteri silinemedi.");
-      show({ type: "error", title: "Silme islemi basarisiz" });
+      setError("Müşteri silinemedi.");
+      show({ type: "error", title: "Silme islemi başarısız" });
     }
   }
 
@@ -224,41 +225,39 @@ export default function CustomersPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Musteriler</h1>
-          <p className="mt-1 text-sm text-subtext">CRM kayitlari ve iliski yonetimi</p>
+          <h1 className="page-title">Müşteriler</h1>
+          <p className="page-subtitle">CRM kayıtları ve ilişki yönetimi</p>
         </div>
-        <Button onClick={openCreateModal}>Yeni Musteri</Button>
+        <Button onClick={openCreateModal}>Yeni Müşteri</Button>
       </div>
 
-      <Card title="Filtreler" description="Arama, durum ve siralama">
+      <Card title="Filtreler" description="Arama, durum ve sıralama">
         <div className="grid grid-cols-1 gap-3 md:grid-cols-4">
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Isim veya firma ara"
+            placeholder="İsim veya firma ara"
           />
-          <select
+          <Select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as "ALL" | CustomerStatus)}
-            className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
           >
-            <option value="ALL">Tum durumlar</option>
+            <option value="ALL">Tüm durumlar</option>
             <option value="LEAD">Lead</option>
             <option value="ACTIVE">Aktif</option>
             <option value="INACTIVE">Pasif</option>
-          </select>
-          <select
+          </Select>
+          <Select
             value={sortBy}
             onChange={(e) =>
               setSortBy(e.target.value as "NAME_ASC" | "NAME_DESC" | "NEWEST" | "OLDEST")
             }
-            className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
           >
             <option value="NEWEST">En yeni</option>
             <option value="OLDEST">En eski</option>
-            <option value="NAME_ASC">Isim A-Z</option>
-            <option value="NAME_DESC">Isim Z-A</option>
-          </select>
+            <option value="NAME_ASC">İsim A-Z</option>
+            <option value="NAME_DESC">İsim Z-A</option>
+          </Select>
           <Button variant="secondary" onClick={() => void loadCustomers()}>
             Yenile
           </Button>
@@ -266,40 +265,65 @@ export default function CustomersPage() {
       </Card>
 
       {error ? (
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+        <div className="app-error-box">
           {error}
         </div>
       ) : null}
 
-      <Card title="Musteri Listesi" description={`${filteredCustomers.length} kayit gosteriliyor`}>
-        <div className="overflow-hidden rounded-2xl border border-border">
-          <div className="grid grid-cols-12 border-b border-border bg-muted/40 px-4 py-3 text-sm text-subtext">
+      <Card title="Müşteri Listesi" description={`${filteredCustomers.length} kayıt gösteriliyor`}>
+        <Table
+          head={
+            <TableHeadRow className="grid-cols-12">
             <div className="col-span-3">Ad Soyad</div>
             <div className="col-span-2">Firma</div>
             <div className="col-span-2">Durum</div>
-            <div className="col-span-3">Iletisim</div>
-            <div className="col-span-2 text-right">Islem</div>
-          </div>
+            <div className="col-span-3">İletişim</div>
+            <div className="col-span-2 text-right">İşlem</div>
+            </TableHeadRow>
+          }
+        >
 
           {pageLoading ? (
-            <div className="px-4 py-8 text-sm text-subtext">Yukleniyor...</div>
+            <div className="px-4 py-8 text-sm text-subtext">Yükleniyor...</div>
           ) : filteredCustomers.length === 0 ? (
-            <div className="px-4 py-8 text-sm text-subtext">Filtreye uygun musteri yok.</div>
+            <div className="px-4 py-5">
+              <EmptyState
+                title="Filtreye uygun müşteri yok"
+                description="Arama kriterlerini değiştir veya yeni müşteri ekle."
+              />
+            </div>
           ) : (
             filteredCustomers.map((customer) => (
-              <div
+              <TableRow
                 key={customer.id}
-                className="grid grid-cols-12 items-center border-b border-border/70 px-4 py-4 text-sm last:border-b-0"
+                className="group grid-cols-12"
               >
                 <div className="col-span-3">
-                  <Link
-                    to={`/customers/${customer.id}`}
-                    className="font-medium text-text hover:text-accent"
-                  >
-                    {customer.fullName}
-                  </Link>
-                  <div className="mt-1 text-xs text-subtext">
-                    Son temas: {formatDate(customer.lastContactAt)}
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="flex h-10 w-10 items-center justify-center rounded-lg text-xs font-semibold text-white"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, var(--accent-from) 0%, var(--accent-to) 100%)"
+                      }}
+                    >
+                      {customer.fullName
+                        .split(" ")
+                        .slice(0, 2)
+                        .map((part) => part[0]?.toUpperCase() ?? "")
+                        .join("")}
+                    </div>
+                    <div>
+                      <Link
+                        to={`/customers/${customer.id}`}
+                        className="font-semibold text-text hover:text-accent"
+                      >
+                        {customer.fullName}
+                      </Link>
+                      <div className="mt-1 text-xs text-subtext">
+                        Son temas: {formatDate(customer.lastContactAt)}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -316,23 +340,23 @@ export default function CustomersPage() {
                   <div className="mt-1 text-xs">{customer.phone || "-"}</div>
                 </div>
 
-                <div className="col-span-2 flex justify-end gap-2">
+                <div className="col-span-2 flex justify-end gap-2 opacity-80 transition group-hover:opacity-100">
                   <Button variant="ghost" onClick={() => openEditModal(customer)}>
-                    Duzenle
+                    Düzenle
                   </Button>
                   <Button variant="ghost" onClick={() => void handleDeleteCustomer(customer.id)}>
                     Sil
                   </Button>
                 </div>
-              </div>
+              </TableRow>
             ))
           )}
-        </div>
+        </Table>
       </Card>
 
       <Modal
         open={open}
-        title={form.id ? "Musteri Duzenle" : "Yeni Musteri"}
+        title={form.id ? "Müşteri Düzenle" : "Yeni Müşteri"}
         onClose={() => {
           setOpen(false);
           setForm(initialForm);
@@ -373,25 +397,24 @@ export default function CustomersPage() {
             <Input
               value={form.company}
               onChange={(e) => updateForm("company", e.target.value)}
-              placeholder="Firma adi"
+              placeholder="Firma adı"
             />
           </div>
 
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <div>
               <label className="mb-2 block text-sm text-subtext">Durum</label>
-              <select
+              <Select
                 value={form.status}
                 onChange={(e) => updateForm("status", e.target.value as CustomerStatus)}
-                className="w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none focus:border-accent"
               >
                 <option value="LEAD">Lead</option>
                 <option value="ACTIVE">Aktif</option>
                 <option value="INACTIVE">Pasif</option>
-              </select>
+              </Select>
             </div>
             <div>
-              <label className="mb-2 block text-sm text-subtext">Son iletisim tarihi</label>
+              <label className="mb-2 block text-sm text-subtext">Son iletişim tarihi</label>
               <Input
                 type="date"
                 value={form.lastContactAt}
@@ -405,8 +428,8 @@ export default function CustomersPage() {
             <textarea
               value={form.notes}
               onChange={(e) => updateForm("notes", e.target.value)}
-              placeholder="Kisa not ekle..."
-              className="min-h-[100px] w-full rounded-2xl border border-border bg-muted px-4 py-3 text-sm text-text outline-none placeholder:text-subtext focus:border-accent"
+              placeholder="Kısa not ekle..."
+              className="app-textarea min-h-[100px] text-sm placeholder:text-subtext/80"
             />
           </div>
 
@@ -418,7 +441,7 @@ export default function CustomersPage() {
                 setForm(initialForm);
               }}
             >
-              Vazgec
+              Vazgeç
             </Button>
             <Button onClick={() => void handleSaveCustomer()} disabled={saving}>
               {saving ? "Kaydediliyor..." : "Kaydet"}
@@ -428,12 +451,5 @@ export default function CustomersPage() {
       </Modal>
     </div>
   );
-=======
-export default function CustomersPage() {
-  return <main>Customers Page</main>;
->>>>>>> theirs
-=======
-export default function CustomersPage() {
-  return <main>Customers Page</main>;
->>>>>>> theirs
 }
+
